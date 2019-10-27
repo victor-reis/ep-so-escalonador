@@ -1,0 +1,21 @@
+
+Tsquid:UselessImportCheck"0Remove this unused import 'java.io.PrintWriter'.(ÓÞÏÛ
+dsquid:S2095Š"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(ÞýÖÐ
+Gsquid:UselessImportCheck"Remove this duplicated import.(ªº»Úýÿÿÿÿ
+Zsquid:S1155(">Use isEmpty() to check whether the collection is empty or not.(¢™‹‘ûÿÿÿÿ
+Usquid:S11553">Use isEmpty() to check whether the collection is empty or not.(«ÐÉ–
+Fsquid:S1481‹")Remove this unused "file" local variable.(ÜäÂÿÿÿÿÿ
+Osquid:S1197v"8Move the array designator from the variable to the type.(íõï×
+Ksquid:S1481Ñ".Remove this unused "gravarArq" local variable.(ð‘ðéþÿÿÿÿ
+Zsquid:S1155(">Use isEmpty() to check whether the collection is empty or not.(¢™‹‘ûÿÿÿÿ
+Zsquid:UselessImportCheck"1Remove this unused import 'java.util.Collection'.(¹ÉÐšùÿÿÿÿ
+Usquid:S1155/">Use isEmpty() to check whether the collection is empty or not.(‰’éü
+Zsquid:S1854Ñ"=Remove this useless assignment to local variable "gravarArq".(ð‘ðéþÿÿÿÿ
+1squid:S1220""Move this file to a named package.
+Qsquid:S1854v":Remove this useless assignment to local variable "result".(íõï×
+isquid:S2095•"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(’“µþøÿÿÿÿ
+isquid:S2095Ñ"LUse try-with-resources or close this "BufferedWriter" in a "finally" clause.(ð‘ðéþÿÿÿÿ
+¯%squid:RedundantThrowsDeclarationCheck„"xRemove the declaration of thrown exception 'java.io.FileNotFoundException' which is a subclass of 'java.io.IOException'.(´àíëûÿÿÿÿ
+dsquid:S2095©"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(ÞýÖÐ
+Vsquid:UselessImportCheck
+"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ
