@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
 	private static int totalInstrucoes = 0; // fazer os calculos
@@ -31,10 +29,35 @@ public class Main {
 
 		Collections.sort(processosAtivos);
 
-		// Escrita LogFile
-		for (Processo p : processosAtivos) {
-			logFile.add("Carregando " + p.getNome());
+		EscritaLogFile();
+
+
+		List<Integer> prioridades = processosAtivos.stream()
+				.map(Processo::getCreditos)
+				.distinct().sorted(Integer::compareTo).collect(Collectors.toList());
+
+		List<List<Processo>> listasDePrioridade = new ArrayList<>();
+
+		for (Integer prioridade : prioridades) {
+			List<Processo> processosDeMesmaPrioridade;
+			processosDeMesmaPrioridade = processosAtivos.stream().filter(processo -> prioridade.equals(processo
+					.getCreditos())).collect(
+					Collectors.toList());
+			listasDePrioridade.add(processosDeMesmaPrioridade);
 		}
+
+		for(List<Processo> listaPrioridade : listasDePrioridade){
+
+			for(Processo p : listaPrioridade){
+
+				//executa código
+
+			}
+
+		}
+
+
+
 
 		// Enquanto as listas nao tiverem vazias, executa o escalonador  
  		while (processosAtivos.size() > 0  || processosBloqueados.size() > 0) {
@@ -60,7 +83,13 @@ public class Main {
  		
  		escreverLogFile();
 	}
-	  
+
+	private static void EscritaLogFile() {
+		for (Processo p : processosAtivos) {
+			logFile.add("Carregando " + p.getNome());
+		}
+	}
+
 	public static void executar(int index) {
 		creditosTotal--;
 		totalTroca += 1;
@@ -78,8 +107,8 @@ public class Main {
 			numInstrucoes += 1;
 			
 			//le o comando, deixa pronto para o próximo
-			String comando = processosAtivos.get(index).getInstrucoes().get(processosAtivos.get(index).getIndex());
-			processosAtivos.get(index).setIndex(processosAtivos.get(index).getIndex() + 1);
+			String comando = processosAtivos.get(index).getInstrucoes().get(processosAtivos.get(index).getProgramCounter());
+			processosAtivos.get(index).setProgramCounter(processosAtivos.get(index).getProgramCounter() + 1);
 			
 			//identifica o tipo de comando
 			switch (comando) {
@@ -108,7 +137,7 @@ public class Main {
 				
 				// Remove da lista de ativos, processo finalizado
 				case "SAIDA":
-					logFile.add(processosAtivos.get(index).getNome() + " terminado, " + " X=" + processosAtivos.get(index).getX() + " Y=" + processosAtivos.get(index).getY());	
+					logFile.add(processosAtivos.get(index).getNome() + " terminado, " + " X=" + processosAtivos.get(index).getRegistradorX() + " Y=" + processosAtivos.get(index).getRegistradorY());
 					processosAtivos.remove(index);
 					totalInstrucoes += numInstrucoes;
 					return;
@@ -118,9 +147,9 @@ public class Main {
 					String result[] = new String[2];
 					result = comando.split("=");
 					if (comando.contains("X=")) {
-						processosAtivos.get(index).setX(Integer.parseInt(result[1]));	
+						processosAtivos.get(index).setRegistradorX(Integer.parseInt(result[1]));
 					} else {
-						processosAtivos.get(index).setY(Integer.parseInt(result[1]));
+						processosAtivos.get(index).setRegistradorY(Integer.parseInt(result[1]));
 					}
 			}
 		}

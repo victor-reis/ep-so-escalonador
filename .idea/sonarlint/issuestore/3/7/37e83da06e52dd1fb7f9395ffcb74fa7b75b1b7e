@@ -1,8 +1,8 @@
 
-Œsquid:S1319a"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(€ð§œùÿÿÿÿ
-Œsquid:S1319e"uThe type of the "instrucoes" object should be an interface such as "List" rather than the implementation "ArrayList".(ÜùÄ€
 1squid:S1220""Move this file to a named package.
-Wsquid:UselessImportCheck"3Remove this unused import 'java.io.BufferedReader'.(€é²Å
-Xsquid:UselessImportCheck"/Remove this unused import 'java.io.FileReader'.(Â¡¢äþÿÿÿÿ
-usquid:S1210W"YOverride "equals(Object obj)" to comply with the contract of the "compareTo(T o)" method.(½§­•ùÿÿÿÿ
-Fsquid:S2200Y"/Only the sign of the result should be examined.(žùÅÓ
+Vsquid:UselessImportCheck"/Remove this unused import 'java.io.FileReader'.(Â¡¢äþÿÿÿÿ
+Šsquid:S1319"uThe type of the "instrucoes" object should be an interface such as "List" rather than the implementation "ArrayList".(ÜùÄ€
+Šsquid:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(€ð§œùÿÿÿÿ
+Usquid:UselessImportCheck"3Remove this unused import 'java.io.BufferedReader'.(€é²Å
+ssquid:S1210"YOverride "equals(Object obj)" to comply with the contract of the "compareTo(T o)" method.(½§­•ùÿÿÿÿ
+Dsquid:S2200"/Only the sign of the result should be examined.(žùÅÓ

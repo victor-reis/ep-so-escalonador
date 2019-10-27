@@ -1,42 +1,41 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.util.ArrayList;
 
 //classe que é tabela bcp
 public class Processo implements Comparable<Processo> {
     private String nome;
 	private ArrayList<String> instrucoes;
-	private Integer index = 0;
-	private int x = 0;
-    private int y = 0;
+	private Integer programCounter = 0;
+	private int registradorX = 0;
+    private int registradorY = 0;
     private int bloq = 0;
     private Integer creditos = 0;
     private Integer prioridade;
     private boolean finalizado = false;
+    private int quantum;
     
-	public int getX() {
-        return x;
+	public int getRegistradorX() {
+        return registradorX;
     }
 
     /**
-     * @param x the x to set
+     * @param registradorX the x to set
      */
-    public void setX(int x) {
-        this.x = x;
+    public void setRegistradorX(int registradorX) {
+        this.registradorX = registradorX;
     }
 
     /**
      * @return the y
      */
-    public int getY() {
-        return y;
+    public int getRegistradorY() {
+        return registradorY;
     }
 
     /**
-     * @param y the y to set
+     * @param registradorY the y to set
      */
-    public void setY(int y) {
-        this.y = y;
+    public void setRegistradorY(int registradorY) {
+        this.registradorY = registradorY;
     }
 
     /**
@@ -89,7 +88,7 @@ public class Processo implements Comparable<Processo> {
 		if (this.creditos.compareTo(o.creditos) == 1)
 			return -1;
 		else if (this.creditos.compareTo(o.creditos) == 0)
-			return this.index.compareTo(o.index);
+			return this.programCounter.compareTo(o.programCounter);
 		else
 		    return 1;
     } 
@@ -102,12 +101,12 @@ public class Processo implements Comparable<Processo> {
 		this.instrucoes = instrucoes;
     }
     
-	public int getIndex() {
-		return index;
+	public int getProgramCounter() {
+		return programCounter;
 	}
 
-	public void setIndex(int index) {
-		this.index = index;
+	public void setProgramCounter(int programCounter) {
+		this.programCounter = programCounter;
     }
     
 	public Integer getCreditos() {
@@ -117,4 +116,10 @@ public class Processo implements Comparable<Processo> {
 	public void setCreditos(Integer creditos) {
 		this.creditos = creditos;
     }
+
+  public int getQuantum() {
+    return this.quantum;
+  }
+  public void setQuantum(int quantum) { this.quantum = quantum; }
+
 }
