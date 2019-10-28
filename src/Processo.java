@@ -97,6 +97,14 @@ public class Processo implements Comparable<Processo> {
 		return instrucoes;
 	}
 
+	public String getInstrucao(){
+      return  this.getInstrucoes().get(this.getProgramCounter());
+  }
+
+  public void incProgramCounter(){
+      this.programCounter++;
+  }
+
 	public void setInstrucoes(ArrayList<String> instrucoes) {
 		this.instrucoes = instrucoes;
     }

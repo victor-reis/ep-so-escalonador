@@ -7,12 +7,13 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Main {
 	private static int totalInstrucoes = 0; // fazer os calculos
 	private static int totalTroca = 0 ; // fazer o calculos
-	private static int quantum;
+	private static int QUANTUM_MAXIMO;
 	private static int creditosTotal = 0; // variavel para controlar redistribuição
 	private static ArrayList<Processo> processosAtivos; // Lista Processo ativos
 	private static ArrayList<Processo> processosBloqueados;// Lista Prcesso bloqueados
@@ -20,8 +21,9 @@ public class Main {
 	private static String dir = System.getProperty("user.dir");
 
 	public static void main(String[] args) throws IOException {
-		dir = dir.substring(0, dir.length() - 4) + "/";
-		
+//		dir = dir.substring(0, dir.length() - 4) + "/";
+		dir += "/";
+		System.out.println(dir);
 		processosBloqueados = new ArrayList<>();
 		logFile = new ArrayList<>();
 		inicializarEscalonador();
@@ -32,26 +34,35 @@ public class Main {
 		EscritaLogFile();
 
 
-		List<Integer> prioridades = processosAtivos.stream()
+		Optional<Integer> maxPrioridade = processosAtivos.stream()
 				.map(Processo::getCreditos)
-				.distinct().sorted(Integer::compareTo).collect(Collectors.toList());
+				.max(Integer::compareTo);
 
 		List<List<Processo>> listasDePrioridade = new ArrayList<>();
 
-		for (Integer prioridade : prioridades) {
-			List<Processo> processosDeMesmaPrioridade;
-			processosDeMesmaPrioridade = processosAtivos.stream().filter(processo -> prioridade.equals(processo
-					.getCreditos())).collect(
-					Collectors.toList());
+		for (Integer i = maxPrioridade.get(); i >= 0; i--) {
+			final Integer prioridade = i;
+
+			List<Processo> processosDeMesmaPrioridade = processosAtivos.stream()
+					.filter(processo -> prioridade.equals(processo.getCreditos()))
+					.collect(Collectors.toList());
+
 			listasDePrioridade.add(processosDeMesmaPrioridade);
 		}
 
 		for(List<Processo> listaPrioridade : listasDePrioridade){
 
-			for(Processo p : listaPrioridade){
+			for(Processo processo : listaPrioridade){
+				totalTroca += 1;
+				aumentaQuantum(processo);
 
-				//executa código
+				//decrementa
+				reduzCreditos(processo);
 
+				mudaDeFila(maxPrioridade, listasDePrioridade, processo);
+
+				//executa
+				executa(processo);
 			}
 
 		}
@@ -79,9 +90,69 @@ public class Main {
  		//Escrita no logFile
  		logFile.add("Média de Trocas " + (double) totalTroca / 10);
  		logFile.add("Média de Instrucoes " + (double) totalInstrucoes / totalTroca);
- 		logFile.add("Quantum " + quantum);
+ 		logFile.add("Quantum " + QUANTUM_MAXIMO);
  		
  		escreverLogFile();
+	}
+
+	private static void executa(Processo processo) {
+		int instrucoesExecutadas = 0;
+
+		for(int quantum = processo.getQuantum();quantum > 0; quantum--){
+			totalInstrucoes++;
+			instrucoesExecutadas++;
+
+			//escrita no logfile
+			logFile.add("Executando " + processo.getNome());
+
+			String instrucao = processo.getInstrucao();
+			processo.incProgramCounter();
+
+
+			switch(instrucao){
+				case("COM"):
+					break;
+				case("E/S"):
+					break;
+				case("SAIDA"):
+					logFile.add(processo.getNome() + " terminado, " + " X=" + processo.getRegistradorX() + " Y=" + processo.getRegistradorY());
+					processosAtivos.remove(processo);
+					return;
+				default:
+					String result[] = new String[2];
+					result = instrucao.split("=");
+					if (instrucao.contains("X=")) {
+						processo.setRegistradorX(Integer.parseInt(result[1]));
+					} else {
+						processo.setRegistradorY(Integer.parseInt(result[1]));
+					}
+			}
+		}
+		logFile.add("interrompendo " + processo.getNome() + " após " + instrucoesExecutadas + " instruções");
+	}
+
+	private static void mudaDeFila(Optional<Integer> maxPrioridade,
+			List<List<Processo>> listasDePrioridade, Processo processo) {
+		if(!processo.isFinalizado())
+		listasDePrioridade
+				.get(maxPrioridade.get() - processo.getCreditos()) //quando NA MAXIMA PRIORIDADE RODAR ROUND ROBIN
+				.add(processo);
+	}
+
+	private static void reduzCreditos(Processo processo) {
+		Integer novoCredito = processo.getCreditos() - 2;
+		processo.setCreditos(
+				(novoCredito > 0) ? novoCredito : 0
+				);
+	}
+
+	private static void aumentaQuantum(Processo processo) {
+		if(processo.getQuantum() < QUANTUM_MAXIMO){
+		if (processo.getQuantum() == 1){
+			processo.setQuantum(processo.getQuantum() + 2);
+		}else{
+			processo.setQuantum(processo.getQuantum() + 1);
+		}}
 	}
 
 	private static void EscritaLogFile() {
@@ -91,7 +162,6 @@ public class Main {
 	}
 
 	public static void executar(int index) {
-		creditosTotal--;
 		totalTroca += 1;
 		int numInstrucoes = 0;
 
@@ -103,13 +173,14 @@ public class Main {
 		descBloq();
 		
 		//até no maximo tamanho do quantum
-		for (int i = 0; i < quantum; i++) {
+		for (int i = 0; i < QUANTUM_MAXIMO; i++) {
+			totalTroca += 1;
 			numInstrucoes += 1;
 			
 			//le o comando, deixa pronto para o próximo
 			String comando = processosAtivos.get(index).getInstrucoes().get(processosAtivos.get(index).getProgramCounter());
 			processosAtivos.get(index).setProgramCounter(processosAtivos.get(index).getProgramCounter() + 1);
-			
+
 			//identifica o tipo de comando
 			switch (comando) {
 				//comando comum
@@ -196,7 +267,7 @@ public class Main {
 		//Ler o quantum
 		fileR = new FileReader(dir + "processos/quantum.txt");
 		buff2 = new BufferedReader(fileR);
-		quantum = Integer.parseInt(buff2.readLine());
+		QUANTUM_MAXIMO = Integer.parseInt(buff2.readLine());
 
 	}
 
@@ -234,7 +305,7 @@ public class Main {
 
 	public static void escreverLogFile() throws IOException {
 		//método de escrita do log file
-		FileWriter arq = new FileWriter(dir + "logfile/log" + quantum +".txt");
+		FileWriter arq = new FileWriter(dir + "logfile/log" + QUANTUM_MAXIMO +".txt");
 		BufferedWriter gravarArq = new BufferedWriter(arq);
 		
 		for (String s : logFile) {
