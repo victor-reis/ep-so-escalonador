@@ -33,15 +33,11 @@ public class Main {
 
 		EscritaLogFile();
 
-
-
-
-
 		while ((processosAtivos.size() > 0) || (processosBloqueados.size() > 0)){
 			redestribuir();
 			setPrioridadeMax();
 			inicializaFilaDeMultiplaPrioridade();
-					correTodosOsCreditos();
+			correTodosOsCreditos();
 
 				}
 
@@ -82,18 +78,24 @@ public class Main {
 
 			while (!listaPrioridade.isEmpty()) {
 				Processo processo = listaPrioridade.get(0);
-				totalTroca += 1;
 
-					aumentaQuantum(processo);
+				for(int i=0;i <= listaPrioridade.size();i++){
+					if(i == listaPrioridade.size()){
+						System.out.println("todos bloqueado");
+						descBloq();
+						//fluxo de todos bloqueados
+					}else if(processosAtivos.contains(processo)){
+						totalTroca += 1;
+						executa(processo);
+						listaPrioridade.remove(processo);
 
-					reduzCreditos(processo);
-
-					executa(processo);
-
-					listaPrioridade.remove(processo);
-
-					if(!isLastList(prioridade))
-					mudaDeFila(processo);
+						if(!isLastList(prioridade))
+							mudaDeFila(processo);
+					break;
+					}else{
+						processo = listaPrioridade.get(i);
+					}
+				}
 			}
 		}
 	}
@@ -123,6 +125,9 @@ public class Main {
 	}
 
 	private static void executa(Processo processo) {
+		aumentaQuantum(processo);
+
+		reduzCreditos(processo);
 		for(int instrucoesExecutadas = 0;instrucoesExecutadas < processo.getQuantum();){
 			totalInstrucoes++;
 			instrucoesExecutadas++;
@@ -180,10 +185,11 @@ public class Main {
 
 	private static void mudaDeFila(Processo processo) {
 		if(!processo.isFinalizado() &&
-				(processosAtivos.contains(processo) || processosBloqueados.contains(processosBloqueados)))
-		multiplaListaDePrioridade
-				.get(PRIORIDADE_MAX - processo.getCreditos()) //quando NA MAXIMA PRIORIDADE RODAR ROUND ROBIN
-				.add(processo);
+				(processosAtivos.contains(processo) || processosBloqueados.contains(processo))) {
+			multiplaListaDePrioridade
+					.get(PRIORIDADE_MAX - processo.getCreditos()) //quando NA MAXIMA PRIORIDADE RODAR ROUND ROBIN
+					.add(processo);
+		}
 	}
 
 	private static void reduzCreditos(Processo processo) {
