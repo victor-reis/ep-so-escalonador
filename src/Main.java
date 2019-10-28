@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -17,8 +16,10 @@ public class Main {
 	private static int creditosTotal = 0; // variavel para controlar redistribuição
 	private static ArrayList<Processo> processosAtivos; // Lista Processo ativos
 	private static ArrayList<Processo> processosBloqueados;// Lista Prcesso bloqueados
+	private static List<List<Processo>> multiplaListaDePrioridade = new ArrayList<>();
 	private static ArrayList<String> logFile;// receber as respostas para logfile
 	private static String dir = System.getProperty("user.dir");
+	private static Integer PRIORIDADE_MAX;
 
 	public static void main(String[] args) throws IOException {
 //		dir = dir.substring(0, dir.length() - 4) + "/";
@@ -33,24 +34,11 @@ public class Main {
 
 		EscritaLogFile();
 
+		setPrioridadeMax();
 
-		Optional<Integer> maxPrioridade = processosAtivos.stream()
-				.map(Processo::getCreditos)
-				.max(Integer::compareTo);
+		inicializaFilaDeMultiplaPrioridade();
 
-		List<List<Processo>> listasDePrioridade = new ArrayList<>();
-
-		for (Integer i = maxPrioridade.get(); i >= 0; i--) {
-			final Integer prioridade = i;
-
-			List<Processo> processosDeMesmaPrioridade = processosAtivos.stream()
-					.filter(processo -> prioridade.equals(processo.getCreditos()))
-					.collect(Collectors.toList());
-
-			listasDePrioridade.add(processosDeMesmaPrioridade);
-		}
-
-		for(List<Processo> listaPrioridade : listasDePrioridade){
+		for(List<Processo> listaPrioridade : multiplaListaDePrioridade){
 
 			for(Processo processo : listaPrioridade){
 				totalTroca += 1;
@@ -59,48 +47,69 @@ public class Main {
 				//decrementa
 				reduzCreditos(processo);
 
-				mudaDeFila(maxPrioridade, listasDePrioridade, processo);
-
 				//executa
 				executa(processo);
+
+				mudaDeFila(processo);
 			}
 
 		}
 
 
+		logFile.add("Média de Trocas " + (double) totalTroca / 10);
+		logFile.add("Média de Instrucoes " + (double) totalInstrucoes / totalTroca);
+		logFile.add("Quantum " + QUANTUM_MAXIMO);
 
+		escreverLogFile();
 
 		// Enquanto as listas nao tiverem vazias, executa o escalonador  
- 		while (processosAtivos.size() > 0  || processosBloqueados.size() > 0) {
-			if (creditosTotal == 0) {
-				redestribuir();
-			}
-			
-			Collections.sort(processosAtivos);
-
-			if (processosAtivos.size() > 0) {
-				executar(0);
-			}
-			
-			else if (processosBloqueados.size() > 0) {
-				descBloq();	
-			}
-	    }
- 		
- 		//Escrita no logFile
- 		logFile.add("Média de Trocas " + (double) totalTroca / 10);
- 		logFile.add("Média de Instrucoes " + (double) totalInstrucoes / totalTroca);
- 		logFile.add("Quantum " + QUANTUM_MAXIMO);
- 		
+// 		while (processosAtivos.size() > 0  || processosBloqueados.size() > 0) {
+//			if (creditosTotal == 0) {
+//				redestribuir();
+//			}
+//
+//			Collections.sort(processosAtivos);
+//
+//			if (processosAtivos.size() > 0) {
+//				executar(0);
+//			}
+//
+//			else if (processosBloqueados.size() > 0) {
+//				descBloq();
+//			}
+//	    }
+//
+// 		//Escrita no logFile
+// 		logFile.add("Média de Trocas " + (double) totalTroca / 10);
+// 		logFile.add("Média de Instrucoes " + (double) totalInstrucoes / totalTroca);
+// 		logFile.add("Quantum " + QUANTUM_MAXIMO);
+//
  		escreverLogFile();
 	}
 
-	private static void executa(Processo processo) {
-		int instrucoesExecutadas = 0;
+	private static void setPrioridadeMax() {
+		PRIORIDADE_MAX = processosAtivos.stream()
+				.map(Processo::getCreditos)
+				.max(Integer::compareTo).get();
+	}
 
-		for(int quantum = processo.getQuantum();quantum > 0; quantum--){
+	private static void inicializaFilaDeMultiplaPrioridade() {
+		for (Integer i = PRIORIDADE_MAX; i >= 0; i--) {
+			final Integer prioridade = i;
+
+			List<Processo> processosDeMesmaPrioridade = processosAtivos.stream()
+					.filter(processo -> prioridade.equals(processo.getCreditos()))
+					.collect(Collectors.toList());
+
+			multiplaListaDePrioridade.add(processosDeMesmaPrioridade);
+		}
+	}
+
+	private static void executa(Processo processo) {
+		for(int instrucoesExecutadas = 0;instrucoesExecutadas < processo.getQuantum();){
 			totalInstrucoes++;
 			instrucoesExecutadas++;
+			descBloq();
 
 			//escrita no logfile
 			logFile.add("Executando " + processo.getNome());
@@ -108,16 +117,25 @@ public class Main {
 			String instrucao = processo.getInstrucao();
 			processo.incProgramCounter();
 
-
 			switch(instrucao){
 				case("COM"):
 					break;
+
 				case("E/S"):
-					break;
-				case("SAIDA"):
-					logFile.add(processo.getNome() + " terminado, " + " X=" + processo.getRegistradorX() + " Y=" + processo.getRegistradorY());
+					logFile.add("E/S iniciada em " + processo.getNome());
+					logAmountOfInstructionsOnIO(processo, instrucoesExecutadas);
+
+					processo.setBloq(2); // esperar 2 quantum
+					processosBloqueados.add(processo);
 					processosAtivos.remove(processo);
 					return;
+
+				case("SAIDA"):
+					logFile.add(processo.getNome() + " terminado, " + " X=" + processo.getRegistradorX() + " Y=" + processo.getRegistradorY());
+
+					processosAtivos.remove(processo);
+					return;
+
 				default:
 					String result[] = new String[2];
 					result = instrucao.split("=");
@@ -127,15 +145,26 @@ public class Main {
 						processo.setRegistradorY(Integer.parseInt(result[1]));
 					}
 			}
+
+			//só log ignorar
+			if(instrucoesExecutadas == processo.getQuantum())
+				logFile.add("interrompendo " + processo.getNome() + " após " + instrucoesExecutadas + " instruções");
+
 		}
-		logFile.add("interrompendo " + processo.getNome() + " após " + instrucoesExecutadas + " instruções");
 	}
 
-	private static void mudaDeFila(Optional<Integer> maxPrioridade,
-			List<List<Processo>> listasDePrioridade, Processo processo) {
+	private static void logAmountOfInstructionsOnIO(Processo processo, int instrucoesExecutadas) {
+		if (instrucoesExecutadas == 1) {
+			logFile.add("Interrompendo " + processo.getNome() + " apos " + (instrucoesExecutadas) + " intrucao (havia apenas a E/S)");
+		} else {
+			logFile.add("Interrompendo " + processo.getNome()  + " apos " + (instrucoesExecutadas) + " intrucao(oes) (E/S)");
+		}
+	}
+
+	private static void mudaDeFila(Processo processo) {
 		if(!processo.isFinalizado())
-		listasDePrioridade
-				.get(maxPrioridade.get() - processo.getCreditos()) //quando NA MAXIMA PRIORIDADE RODAR ROUND ROBIN
+		multiplaListaDePrioridade
+				.get(PRIORIDADE_MAX - processo.getCreditos()) //quando NA MAXIMA PRIORIDADE RODAR ROUND ROBIN
 				.add(processo);
 	}
 
@@ -280,6 +309,7 @@ public class Main {
 
 			if (p.getBloq() == 0) {
 				processosAtivos.add(p);
+				mudaDeFila(p);
 			} else {
 				processosBloqueados1.add(p);
 			}
