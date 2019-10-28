@@ -28,18 +28,19 @@ public class Main {
 		processosBloqueados = new ArrayList<>();
 		logFile = new ArrayList<>();
 		inicializarEscalonador();
-		redestribuir();
 
 		Collections.sort(processosAtivos);
 
 		EscritaLogFile();
 
-		setPrioridadeMax();
 
-		inicializaFilaDeMultiplaPrioridade();
+
+
 
 		while ((processosAtivos.size() > 0) || (processosBloqueados.size() > 0)){
-
+			redestribuir();
+			setPrioridadeMax();
+			inicializaFilaDeMultiplaPrioridade();
 					correTodosOsCreditos();
 
 				}
@@ -73,7 +74,6 @@ public class Main {
 // 		logFile.add("Média de Instrucoes " + (double) totalInstrucoes / totalTroca);
 // 		logFile.add("Quantum " + QUANTUM_MAXIMO);
 //
- 		escreverLogFile();
 	}
 
 	private static void correTodosOsCreditos() {
@@ -92,9 +92,14 @@ public class Main {
 
 					listaPrioridade.remove(processo);
 
+					if(!isLastList(prioridade))
 					mudaDeFila(processo);
 			}
 		}
+	}
+
+	private static boolean isLastList(int prioridade) {
+		return (prioridade == PRIORIDADE_MAX);
 	}
 
 	private static void setPrioridadeMax() {
@@ -104,6 +109,7 @@ public class Main {
 	}
 
 	private static void inicializaFilaDeMultiplaPrioridade() {
+		List<List<Processo>> novaListaDePrioridade = new ArrayList<>();
 		for (Integer i = PRIORIDADE_MAX; i >= 0; i--) {
 			final Integer prioridade = i;
 
@@ -111,8 +117,9 @@ public class Main {
 					.filter(processo -> prioridade.equals(processo.getCreditos()))
 					.collect(Collectors.toList());
 
-			multiplaListaDePrioridade.add(processosDeMesmaPrioridade);
+			novaListaDePrioridade.add(processosDeMesmaPrioridade);
 		}
+		multiplaListaDePrioridade = novaListaDePrioridade;
 	}
 
 	private static void executa(Processo processo) {
@@ -172,7 +179,8 @@ public class Main {
 	}
 
 	private static void mudaDeFila(Processo processo) {
-		if(!processo.isFinalizado())
+		if(!processo.isFinalizado() &&
+				(processosAtivos.contains(processo) || processosBloqueados.contains(processosBloqueados)))
 		multiplaListaDePrioridade
 				.get(PRIORIDADE_MAX - processo.getCreditos()) //quando NA MAXIMA PRIORIDADE RODAR ROUND ROBIN
 				.add(processo);
