@@ -9,96 +9,52 @@ Carregando TESTE-6
 Carregando TESTE-10
 Carregando TESTE-1
 Executando TESTE-3
-TESTE-3 terminado,  X=4 Y=10
+interrompendo TESTE-3 após 1 instruções
+Executando TESTE-5
+interrompendo TESTE-5 após 1 instruções
+Executando TESTE-7
+interrompendo TESTE-7 após 1 instruções
+Executando TESTE-2
+interrompendo TESTE-2 após 1 instruções
+Executando TESTE-4
+interrompendo TESTE-4 após 1 instruções
+Executando TESTE-8
+interrompendo TESTE-8 após 1 instruções
+Executando TESTE-9
+interrompendo TESTE-9 após 1 instruções
+Executando TESTE-6
+interrompendo TESTE-6 após 1 instruções
+Executando TESTE-10
+interrompendo TESTE-10 após 1 instruções
+Executando TESTE-3
+Executando TESTE-3
+Executando TESTE-3
+interrompendo TESTE-3 após 3 instruções
 Executando TESTE-5
 E/S iniciada em TESTE-5
-Interrompendo TESTE-5 apos 2 intrucao(oes) (E/S)
+Interrompendo TESTE-5 apos 1 intrucao (havia apenas a E/S)
+Executando TESTE-7
+Executando TESTE-7
 Executando TESTE-7
 E/S iniciada em TESTE-7
-Interrompendo TESTE-7 apos 4 intrucao(oes) (E/S)
+Interrompendo TESTE-7 apos 3 intrucao(oes) (E/S)
+Executando TESTE-1
+interrompendo TESTE-1 após 1 instruções
 Executando TESTE-2
-E/S iniciada em TESTE-2
-Interrompendo TESTE-2 apos 5 intrucao(oes) (E/S)
+Executando TESTE-2
+Executando TESTE-2
+interrompendo TESTE-2 após 3 instruções
 Executando TESTE-4
 E/S iniciada em TESTE-4
-Interrompendo TESTE-4 apos 2 intrucao(oes) (E/S)
+Interrompendo TESTE-4 apos 1 intrucao (havia apenas a E/S)
 Executando TESTE-8
-interrompendo TESTE-8 após 21 instruções
+Executando TESTE-8
+Executando TESTE-8
+interrompendo TESTE-8 após 3 instruções
+Executando TESTE-9
 Executando TESTE-9
 E/S iniciada em TESTE-9
-Interrompendo TESTE-9 apos 3 intrucao(oes) (E/S)
-Executando TESTE-5
-E/S iniciada em TESTE-5
-Interrompendo TESTE-5 apos 3 intrucao(oes) (E/S)
-Executando TESTE-7
-E/S iniciada em TESTE-7
-Interrompendo TESTE-7 apos 9 intrucao(oes) (E/S)
-Executando TESTE-6
-E/S iniciada em TESTE-6
-Interrompendo TESTE-6 apos 4 intrucao(oes) (E/S)
-Executando TESTE-10
-E/S iniciada em TESTE-10
-Interrompendo TESTE-10 apos 11 intrucao(oes) (E/S)
-Executando TESTE-4
-E/S iniciada em TESTE-4
-Interrompendo TESTE-4 apos 4 intrucao(oes) (E/S)
-Executando TESTE-9
-E/S iniciada em TESTE-9
-Interrompendo TESTE-9 apos 11 intrucao(oes) (E/S)
-Executando TESTE-2
-E/S iniciada em TESTE-2
-Interrompendo TESTE-2 apos 7 intrucao(oes) (E/S)
-Executando TESTE-5
-E/S iniciada em TESTE-5
-Interrompendo TESTE-5 apos 3 intrucao(oes) (E/S)
-Executando TESTE-7
-TESTE-7 terminado,  X=3 Y=5
-Executando TESTE-8
-TESTE-8 terminado,  X=1 Y=3
-Executando TESTE-1
-E/S iniciada em TESTE-1
-Interrompendo TESTE-1 apos 5 intrucao(oes) (E/S)
-Executando TESTE-6
-E/S iniciada em TESTE-6
-Interrompendo TESTE-6 apos 7 intrucao(oes) (E/S)
-Executando TESTE-4
-E/S iniciada em TESTE-4
-Interrompendo TESTE-4 apos 5 intrucao(oes) (E/S)
-Executando TESTE-5
-E/S iniciada em TESTE-5
-Interrompendo TESTE-5 apos 5 intrucao(oes) (E/S)
-Executando TESTE-10
-TESTE-10 terminado,  X=3 Y=5
-Executando TESTE-2
-E/S iniciada em TESTE-2
-Interrompendo TESTE-2 apos 5 intrucao(oes) (E/S)
-Executando TESTE-9
-TESTE-9 terminado,  X=3 Y=4
-Executando TESTE-1
-E/S iniciada em TESTE-1
-Interrompendo TESTE-1 apos 5 intrucao(oes) (E/S)
-Executando TESTE-6
-E/S iniciada em TESTE-6
-Interrompendo TESTE-6 apos 6 intrucao(oes) (E/S)
-Executando TESTE-4
-E/S iniciada em TESTE-4
-Interrompendo TESTE-4 apos 4 intrucao(oes) (E/S)
-Executando TESTE-5
-E/S iniciada em TESTE-5
-Interrompendo TESTE-5 apos 3 intrucao(oes) (E/S)
-Executando TESTE-2
-TESTE-2 terminado,  X=9 Y=1
-Executando TESTE-4
-E/S iniciada em TESTE-4
-Interrompendo TESTE-4 apos 4 intrucao(oes) (E/S)
-Executando TESTE-5
-TESTE-5 terminado,  X=3 Y=5
-Executando TESTE-6
-TESTE-6 terminado,  X=4 Y=6
-Executando TESTE-4
-TESTE-4 terminado,  X=91 Y=5
-Executando TESTE-1
-TESTE-1 terminado,  X=3 Y=10
-Média de Trocas 3.4
-Média de Instrucoes 5.823529411764706
+Interrompendo TESTE-9 apos 2 intrucao(oes) (E/S)
+Média de Trocas 1.7
+Média de Instrucoes 1.5294117647058822
 Quantum 21

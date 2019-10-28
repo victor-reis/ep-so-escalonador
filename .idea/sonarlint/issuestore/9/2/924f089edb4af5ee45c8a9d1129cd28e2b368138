@@ -1,21 +1,29 @@
 
-ksquid:S2095©"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(ŞıÖĞ8äÈ£ïà-
-psquid:S2095•"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(’“µşøÿÿÿÿ8äÈ£ïà-
-psquid:S2095Ñ"LUse try-with-resources or close this "BufferedWriter" in a "finally" clause.(ğ‘ğéşÿÿÿÿ8äÈ£ïà-
-ksquid:S2095Š"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(ŞıÖĞ8äÈ£ïà-
-8squid:S1220""Move this file to a named package.8äÈ£ïà-
-Nsquid:UselessImportCheck"Remove this duplicated import.(ªº»Úıÿÿÿÿ8äÈ£ïà-
-[squid:UselessImportCheck"0Remove this unused import 'java.io.PrintWriter'.(ÓŞÏÛ8äÈ£ïà-
-]squid:UselessImportCheck
-"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ8äÈ£ïà-
-asquid:UselessImportCheck"1Remove this unused import 'java.util.Collection'.(¹ÉĞšùÿÿÿÿ8äÈ£ïà-
-asquid:S1155(">Use isEmpty() to check whether the collection is empty or not.(¢™‹‘ûÿÿÿÿ8äÈ£ïà-
-asquid:S1155(">Use isEmpty() to check whether the collection is empty or not.(¢™‹‘ûÿÿÿÿ8äÈ£ïà-
-\squid:S1155/">Use isEmpty() to check whether the collection is empty or not.(‰’éü8äÈ£ïà-
-\squid:S11553">Use isEmpty() to check whether the collection is empty or not.(«ĞÉ–8äÈ£ïà-
-Xsquid:S1854v":Remove this useless assignment to local variable "result".(íõï×8äÈ£ïà-
-Vsquid:S1197v"8Move the array designator from the variable to the type.(íõï×8äÈ£ïà-
-¶%squid:RedundantThrowsDeclarationCheck„"xRemove the declaration of thrown exception 'java.io.FileNotFoundException' which is a subclass of 'java.io.IOException'.(´àíëûÿÿÿÿ8äÈ£ïà-
-asquid:S1854Ñ"=Remove this useless assignment to local variable "gravarArq".(ğ‘ğéşÿÿÿÿ8äÈ£ïà-
-Msquid:S1481‹")Remove this unused "file" local variable.(ÜäÂÿÿÿÿÿ8äÈ£ïà-
-Rsquid:S1481Ñ".Remove this unused "gravarArq" local variable.(ğ‘ğéşÿÿÿÿ8äÈ£ïà-
+nsquid:CommentedOutCodeLine7"<This block of commented-out lines of code should be removed.(Ñ•şÿÿÿÿ8è­¯ƒá-
+|squid:S3008"YRename this field "CREDITOS_TOTAL" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÀŞê¨ıÿÿÿÿ8Ë¾¿ƒá-
+nsquid:CommentedOutCodeLineH"<This block of commented-out lines of code should be removed.(ßßõ•üÿÿÿÿ8€üÉƒá-
+ksquid:S2095¹"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(ŞıÖĞ8™ã„„á-
+Ysquid:S1854†":Remove this useless assignment to local variable "result".(íõï×8™ã„„á-
+Msquid:S1481›")Remove this unused "file" local variable.(ÜäÂÿÿÿÿÿ8™ã„„á-
+asquid:S1854á"=Remove this useless assignment to local variable "gravarArq".(ğ‘ğéşÿÿÿÿ8™ã„„á-
+nsquid:CommentedOutCodeLine<"<This block of commented-out lines of code should be removed.(¢‹Šúşÿÿÿÿ8€üÉƒá-
+psquid:S2095á"LUse try-with-resources or close this "BufferedWriter" in a "finally" clause.(ğ‘ğéşÿÿÿÿ8™ã„„á-
+|squid:S3008"YRename this field "PRIORIDADE_MAX" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(º¼¯¯ıÿÿÿÿ8û¶€á-
+nsquid:CommentedOutCodeLineB"<This block of commented-out lines of code should be removed.(Úşˆ÷øÿÿÿÿ8€üÉƒá-
+Š squid:ForLoopCounterChangedCheck~"XRefactor the code in order to not assign to this loop counter from within the loop body.(ú“ÔH8™ã„„á-
+ksquid:S2095š"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(ŞıÖĞ8™ã„„á-
+Wsquid:S1197†"8Move the array designator from the variable to the type.(íõï×8™ã„„á-
+¶%squid:RedundantThrowsDeclarationCheck”"xRemove the declaration of thrown exception 'java.io.FileNotFoundException' which is a subclass of 'java.io.IOException'.(´àíëûÿÿÿÿ8™ã„„á-
+Rsquid:S1481á".Remove this unused "gravarArq" local variable.(ğ‘ğéşÿÿÿÿ8™ã„„á-
+isquid:CommentedOutCodeLine>"<This block of commented-out lines of code should be removed.(åŞ£8€üÉƒá-
+[
+squid:S106"9Replace this use of System.out or System.err by a logger.(Âº™êúÿÿÿÿ8»Ğáá-
+vsquid:S3008"YRename this field "QUANTUM_MAXIMO" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œÁø38éÉ°øà-
+Hsquid:S00108W")Either remove or fill this block of code.(Û–Šˆ8ã‰Â„á-
+ssquid:S1192­"ODefine a constant instead of duplicating this literal "Interrompendo " 4 times.(““î‡ÿÿÿÿÿ8™ã„„á-
+ksquid:S1192­"GDefine a constant instead of duplicating this literal " apos " 4 times.(““î‡ÿÿÿÿÿ8™ã„„á-
+Ysquid:S1854›":Remove this useless assignment to local variable "result".(íõï×8™ã„„á-
+Wsquid:S1197›"8Move the array designator from the variable to the type.(íõï×8™ã„„á-
+psquid:S2095¥"LUse try-with-resources or close this "BufferedReader" in a "finally" clause.(’“µşøÿÿÿÿ8™ã„„á-
+nsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(…ôıøÿÿÿÿ8àÌ¨ùà-
+ssquid:S00100Ê"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¦øİÿúÿÿÿÿ8™ã„„á-

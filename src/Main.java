@@ -13,7 +13,7 @@ public class Main {
 	private static int totalInstrucoes = 0; // fazer os calculos
 	private static int totalTroca = 0 ; // fazer o calculos
 	private static int QUANTUM_MAXIMO;
-	private static int creditosTotal = 0; // variavel para controlar redistribuição
+	private static int CREDITOS_TOTAL = 0; // variavel para controlar redistribuição
 	private static ArrayList<Processo> processosAtivos; // Lista Processo ativos
 	private static ArrayList<Processo> processosBloqueados;// Lista Prcesso bloqueados
 	private static List<List<Processo>> multiplaListaDePrioridade = new ArrayList<>();
@@ -38,22 +38,11 @@ public class Main {
 
 		inicializaFilaDeMultiplaPrioridade();
 
-		for(List<Processo> listaPrioridade : multiplaListaDePrioridade){
+		while ((processosAtivos.size() > 0) || (processosBloqueados.size() > 0)){
 
-			for(Processo processo : listaPrioridade){
-				totalTroca += 1;
-				aumentaQuantum(processo);
+					correTodosOsCreditos();
 
-				//decrementa
-				reduzCreditos(processo);
-
-				//executa
-				executa(processo);
-
-				mudaDeFila(processo);
-			}
-
-		}
+				}
 
 
 		logFile.add("Média de Trocas " + (double) totalTroca / 10);
@@ -85,6 +74,27 @@ public class Main {
 // 		logFile.add("Quantum " + QUANTUM_MAXIMO);
 //
  		escreverLogFile();
+	}
+
+	private static void correTodosOsCreditos() {
+		for(int prioridade = 0; prioridade <= PRIORIDADE_MAX; prioridade++) {
+			List<Processo> listaPrioridade = multiplaListaDePrioridade.get(prioridade);
+
+			while (!listaPrioridade.isEmpty()) {
+				Processo processo = listaPrioridade.get(0);
+				totalTroca += 1;
+
+					aumentaQuantum(processo);
+
+					reduzCreditos(processo);
+
+					executa(processo);
+
+					listaPrioridade.remove(processo);
+
+					mudaDeFila(processo);
+			}
+		}
 	}
 
 	private static void setPrioridadeMax() {
@@ -169,10 +179,10 @@ public class Main {
 	}
 
 	private static void reduzCreditos(Processo processo) {
-		Integer novoCredito = processo.getCreditos() - 2;
-		processo.setCreditos(
-				(novoCredito > 0) ? novoCredito : 0
-				);
+		Integer novoCredito = Math.max((processo.getCreditos() - 2), 0);
+
+		CREDITOS_TOTAL = CREDITOS_TOTAL - (processo.getCreditos() - novoCredito);
+		processo.setCreditos(novoCredito);
 	}
 
 	private static void aumentaQuantum(Processo processo) {
@@ -302,33 +312,32 @@ public class Main {
 
 	public static void descBloq() {
 		//metódo para decrementar o bloq
-		ArrayList<Processo> processosBloqueados1 = new ArrayList<>();
+		ArrayList<Processo> novaProcessoBloqueado = new ArrayList<>();
 
 		for (Processo p : processosBloqueados) {
 			p.setBloq(p.getBloq() - 1 );
 
 			if (p.getBloq() == 0) {
 				processosAtivos.add(p);
-				mudaDeFila(p);
 			} else {
-				processosBloqueados1.add(p);
+				novaProcessoBloqueado.add(p);
 			}
 		}
 
-		processosBloqueados = processosBloqueados1;
+		processosBloqueados = novaProcessoBloqueado;
 	}
 		
 	public static void redestribuir() {
 		// metodo para redistribuir os creditos
-		creditosTotal = 0;
+		CREDITOS_TOTAL = 0;
 
 		for (Processo p : processosAtivos) {
-			creditosTotal += p.getPrioridade();
+			CREDITOS_TOTAL += p.getPrioridade();
 			p.setCreditos(p.getPrioridade());
 		}
 		
 		for (Processo p : processosBloqueados) {
-			creditosTotal += p.getPrioridade();
+			CREDITOS_TOTAL += p.getPrioridade();
 			p.setCreditos(p.getPrioridade());
 		}
 	}
