@@ -1,3 +1,5 @@
+import static java.lang.String.format;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -80,11 +82,12 @@ public class Main {
 				Processo processo = listaPrioridade.get(0);
 
 				for(int i=0;i <= listaPrioridade.size();i++){
-					if(i == listaPrioridade.size()){
-						System.out.println("todos bloqueado");
+					if(aListaInteiraEstaBlocada(listaPrioridade, i)){
+						String filaPrioridadeNumber = processo.getCreditos().toString();
+						logFile.add(format("TODOS OS PROCESSOS BLOQUEADOS NA FILA %s E NA TROCA Nº %s, ESPERANDO UM QUANTUM",filaPrioridadeNumber.toUpperCase(),totalTroca));
 						descBloq();
 						//fluxo de todos bloqueados
-					}else if(processosAtivos.contains(processo)){
+					}else if(ehUmProcessoLivre(processo)){
 						totalTroca += 1;
 						executa(processo);
 						listaPrioridade.remove(processo);
@@ -93,11 +96,20 @@ public class Main {
 							mudaDeFila(processo);
 					break;
 					}else{
+						//pega proximo processo
 						processo = listaPrioridade.get(i);
 					}
 				}
 			}
 		}
+	}
+
+	private static boolean ehUmProcessoLivre(Processo processo) {
+		return processosAtivos.contains(processo);
+	}
+
+	private static boolean aListaInteiraEstaBlocada(List<Processo> listaPrioridade, int i) {
+		return i == listaPrioridade.size();
 	}
 
 	private static boolean isLastList(int prioridade) {
@@ -118,6 +130,12 @@ public class Main {
 			List<Processo> processosDeMesmaPrioridade = processosAtivos.stream()
 					.filter(processo -> prioridade.equals(processo.getCreditos()))
 					.collect(Collectors.toList());
+
+			for(Processo p : processosBloqueados){
+			if(prioridade.equals(p.getCreditos())){
+				processosDeMesmaPrioridade.add(p);
+			}
+			}
 
 			novaListaDePrioridade.add(processosDeMesmaPrioridade);
 		}

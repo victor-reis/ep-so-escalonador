@@ -256,6 +256,8 @@ Executando TESTE-2
 Executando TESTE-2
 Executando TESTE-2
 TESTE-2 terminado,  X=9 Y=1
+Executando TESTE-4
+TESTE-4 terminado,  X=91 Y=5
 Executando TESTE-10
 Executando TESTE-10
 Executando TESTE-10
@@ -287,8 +289,6 @@ TESTE-6 terminado,  X=4 Y=6
 Executando TESTE-1
 Executando TESTE-1
 TESTE-1 terminado,  X=3 Y=10
-Executando TESTE-4
-TESTE-4 terminado,  X=91 Y=5
 Média de Trocas 6.0
 Média de Instrucoes 3.3
 Quantum 21
