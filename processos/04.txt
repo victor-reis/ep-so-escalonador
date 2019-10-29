@@ -18,4 +18,17 @@ X=3
 X=91
 COM
 E/S
+E/S
+COM
+COM
+Y=3
+E/S
+Y=5
+COM
+X=4
+Y=5
+E/S
+COM
+COM
+COM
 SAIDA

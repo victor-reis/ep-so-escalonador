@@ -16,4 +16,16 @@ X=2
 COM
 X=3
 COM
+Y=10
+X=2
+COM
+COM
+E/S
+COM
+COM
+Y=2
+X=4
+COM
+X=1
+COM
 SAIDA
