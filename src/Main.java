@@ -95,9 +95,15 @@ public class Main {
 	}
 
 	private static void setPrioridadeMax() {
-		PRIORIDADE_MAX = processosAtivos.stream()
-				.map(Processo::getCreditos)
-				.max(Integer::compareTo).get();
+		Integer temp = processosAtivos.stream()
+				.map(Processo::getPrioridade)
+				.max(Integer::compareTo).orElse(0);
+
+		Integer temp2 = processosBloqueados.stream()
+				.map(Processo::getPrioridade)
+				.max(Integer::compareTo).orElse(0);
+
+		PRIORIDADE_MAX = Math.max(temp,temp2);
 	}
 
 	private static void inicializaFilaDeMultiplaPrioridade() {
