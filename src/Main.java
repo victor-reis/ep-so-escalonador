@@ -40,7 +40,6 @@ public class Main {
 			setPrioridadeMax();
 			inicializaFilaDeMultiplaPrioridade();
 			correTodosOsCreditos();
-
 				}
 
 
@@ -50,28 +49,6 @@ public class Main {
 
 		escreverLogFile();
 
-		// Enquanto as listas nao tiverem vazias, executa o escalonador  
-// 		while (processosAtivos.size() > 0  || processosBloqueados.size() > 0) {
-//			if (creditosTotal == 0) {
-//				redestribuir();
-//			}
-//
-//			Collections.sort(processosAtivos);
-//
-//			if (processosAtivos.size() > 0) {
-//				executar(0);
-//			}
-//
-//			else if (processosBloqueados.size() > 0) {
-//				descBloq();
-//			}
-//	    }
-//
-// 		//Escrita no logFile
-// 		logFile.add("Média de Trocas " + (double) totalTroca / 10);
-// 		logFile.add("Média de Instrucoes " + (double) totalInstrucoes / totalTroca);
-// 		logFile.add("Quantum " + QUANTUM_MAXIMO);
-//
 	}
 
 	private static void correTodosOsCreditos() {
@@ -86,6 +63,7 @@ public class Main {
 						String filaPrioridadeNumber = processo.getCreditos().toString();
 						logFile.add(format("TODOS OS PROCESSOS BLOQUEADOS NA FILA %s E NA TROCA Nº %s, ESPERANDO UM QUANTUM",filaPrioridadeNumber.toUpperCase(),totalTroca));
 						descBloq();
+						totalInstrucoes++;
 						//fluxo de todos bloqueados
 					}else if(ehUmProcessoLivre(processo)){
 						totalTroca += 1;
@@ -230,74 +208,6 @@ public class Main {
 		for (Processo p : processosAtivos) {
 			logFile.add("Carregando " + p.getNome());
 		}
-	}
-
-	public static void executar(int index) {
-		totalTroca += 1;
-		int numInstrucoes = 0;
-
-		//escrita no logfile
-		logFile.add("Executando " + processosAtivos.get(index).getNome());
-		processosAtivos.get(index).setCreditos(processosAtivos.get(index).getCreditos() - 1);
-		
-		//diminui todos da lista de bloq
-		descBloq();
-		
-		//até no maximo tamanho do quantum
-		for (int i = 0; i < QUANTUM_MAXIMO; i++) {
-			totalTroca += 1;
-			numInstrucoes += 1;
-			
-			//le o comando, deixa pronto para o próximo
-			String comando = processosAtivos.get(index).getInstrucoes().get(processosAtivos.get(index).getProgramCounter());
-			processosAtivos.get(index).setProgramCounter(processosAtivos.get(index).getProgramCounter() + 1);
-
-			//identifica o tipo de comando
-			switch (comando) {
-				//comando comum
-				case "COM":
-					break;
-
-				//adiciona na lista de bloqueados e interrompe a execução
-				case "E/S":
-					Processo processo1 = processosAtivos.get(index);
-					processo1.setBloq(2); // esperar 2 quantum
-					processosBloqueados.add(processo1);
-					totalInstrucoes += numInstrucoes;
-
-					logFile.add("E/S iniciada em " + processosAtivos.get(index).getNome());
-
-					if (numInstrucoes - 1 == 0) {
-						logFile.add("Interrompendo " + processosAtivos.get(index).getNome() + " apos " + (numInstrucoes) + " intrucao (havia apenas a E/S)");
-					} else {
-						logFile.add("Interrompendo " + processosAtivos.get(index).getNome()  + " apos " + (numInstrucoes) + " intrucao(oes) (E/S)");
-					}
-
-					processosAtivos.remove(index);
-
-					return;
-				
-				// Remove da lista de ativos, processo finalizado
-				case "SAIDA":
-					logFile.add(processosAtivos.get(index).getNome() + " terminado, " + " X=" + processosAtivos.get(index).getRegistradorX() + " Y=" + processosAtivos.get(index).getRegistradorY());
-					processosAtivos.remove(index);
-					totalInstrucoes += numInstrucoes;
-					return;
-
-				//Atribui os valores das variaveis x e y
-				default:
-					String result[] = new String[2];
-					result = comando.split("=");
-					if (comando.contains("X=")) {
-						processosAtivos.get(index).setRegistradorX(Integer.parseInt(result[1]));
-					} else {
-						processosAtivos.get(index).setRegistradorY(Integer.parseInt(result[1]));
-					}
-			}
-		}
-
-		totalInstrucoes += numInstrucoes;
-		logFile.add("interrompendo " + processosAtivos.get(index).getNome() + " após " + numInstrucoes + " instruções");
 	}
 
 	public static void inicializarEscalonador() throws FileNotFoundException, IOException {
